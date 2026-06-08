@@ -114,6 +114,5 @@ Week 1 - CSV Row Counter (Your Name)
 
 ---
 
-## 📂 Repository Structure Example
 
 If anything is unclear, ask early. Do not wait until submission day.
