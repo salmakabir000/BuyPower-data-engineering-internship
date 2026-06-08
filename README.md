@@ -13,7 +13,7 @@ All interns must follow this process for every weekly task:
 ### 1. Clone the repository
 
 ```bash
-git clone <repo-url>
+git clone <https://github.com/salmakabir000/BuyPower-data-engineering-internship.git>
 cd data-engineering-internship
 ```
 
