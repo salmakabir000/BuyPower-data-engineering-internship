@@ -2,7 +2,7 @@
 
 Welcome to the internship repository.
 
-This repository is used for weekly learning tasks in data engineering.
+This repository is used for weekly learning tasks submission.
 
 ---
 
