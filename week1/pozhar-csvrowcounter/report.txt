@@ -1,0 +1,6 @@
+CSV Row Count Report
+====================
+Generated: Tue Jun  9 19:31:40 WAT 2026
+
+./test1.csv: 3 rows
+./test2.csv: 4 rows
