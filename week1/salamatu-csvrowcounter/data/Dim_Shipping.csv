@@ -1,0 +1,17 @@
+Shipping_ID,Ship_Mode,Region,Base_Rate,Estimated_Delivery_Days
+FC_W,First Class,West,6.5,2
+FC_E,First Class,East,5.0,2
+FC_C,First Class,Central,4.5,3
+FC_S,First Class,South,4.0,3
+SC_W,Second Class,West,4.0,4
+SC_E,Second Class,East,3.0,3
+SC_C,Second Class,Central,2.5,4
+SC_S,Second Class,South,2.2,4
+STD_W,Standard Class,West,2.5,7
+STD_E,Standard Class,East,1.5,5
+STD_C,Standard Class,Central,1.2,6
+STD_S,Standard Class,South,1.0,6
+SD_W,Same Day,West,10.5,1
+SD_E,Same Day,East,8.5,1
+SD_C,Same Day,Central,7.5,1
+SD_S,Same Day,South,7.0,1
