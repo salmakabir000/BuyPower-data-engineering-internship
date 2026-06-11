@@ -5,20 +5,5 @@ venv/
 __pycache__/
 *.pyc
 *.pyo
-
-# Data files (VERY IMPORTANT for your project)
 *.csv
 *.parquet
-*.pq
-
-# Output folders (like partitioned datasets)
-partitioned_dataset/
-output/
-data/
-
-# Jupyter notebooks (if any later)
-.ipynb_checkpoints/
-
-# OS files
-.DS_Store
-Thumbs.db
