@@ -1,0 +1,39 @@
+#!/bin/bash
+
+show_help() {
+    echo "Usage: ./csv_row_counter.sh <directory>"
+    echo "Counts rows in all CSV files in a directory."
+    echo "Use -h to display this help message."
+}
+
+if [ "$1" = "-h" ]; then
+    show_help
+    exit 0
+fi
+
+if [ $# -ne 1 ]; then
+    echo "Error: Please provide a directory."
+    echo "Use -h for help."
+    exit 1
+fi
+
+DIRECTORY="$1"
+
+if [ ! -d "$DIRECTORY" ]; then
+    echo "Error: Directory '$DIRECTORY' does not exist."
+    exit 1
+fi
+
+REPORT_FILE="report.txt"
+
+echo "CSV Row Count Report" > "$REPORT_FILE"
+echo "Generated on $(date)" >> "$REPORT_FILE"
+echo "--------------------" >> "$REPORT_FILE"
+
+find "$DIRECTORY" -type f -name "*.csv" | while read file
+do
+    ROWS=$(wc -l < "$file")
+    echo "$(basename "$file") : $ROWS rows" >> "$REPORT_FILE"
+done
+
+echo "Report saved to $REPORT_FILE"e
