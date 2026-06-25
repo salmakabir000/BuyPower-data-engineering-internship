@@ -1,0 +1,9 @@
+venv/
+__pycache__/
+*.pyc
+
+output/*.parquet
+output/errors.txt
+output/analysis/
+
+data/NASA_access_log_Jul95
