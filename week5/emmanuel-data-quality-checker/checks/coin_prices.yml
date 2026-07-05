@@ -1,0 +1,41 @@
+dataset: coin_prices
+
+source:
+  type: sqlite
+  path: ../../week4/emmanuel-crypto-etl/crypto.db
+
+table: coin_prices
+
+checks:
+  - column: id
+    type: not_null
+    severity: critical
+
+  - column: id
+    type: unique
+    severity: warning
+
+  - column: current_price
+    type: range
+    min: 0
+    max: 10000000
+    severity: warning
+
+  - column: symbol
+    type: regex_match
+    pattern: "^[a-z0-9]+$"
+    severity: warning
+
+  - type: row_count_min
+    value: 100
+    severity: critical
+
+  - column: symbol
+    type: in_set
+    values:
+      - btc
+      - eth
+      - usdt
+      - bnb
+      - usdc
+    severity: warning 
