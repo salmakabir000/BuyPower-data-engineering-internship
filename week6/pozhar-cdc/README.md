@@ -44,3 +44,31 @@ result set that can crash memory. There is also a latency
 gap — changes made 1 second after a poll won't be seen for 
 another 29 seconds. Finally, hard deletes are invisible to 
 polling since the row no longer exists to be queried.
+
+## Stretch Goal: Moving to Log-Based CDC
+
+Instead of polling, Postgres logical replication reads directly 
+from the Write-Ahead Log (WAL) — a file Postgres uses to record 
+every change before it happens.
+
+To use wal2json or pgoutput, here's what I'd change:
+
+1. Enable logical replication in Postgres:
+   ALTER SYSTEM SET wal_level = logical;
+
+2. Create a replication slot:
+   SELECT pg_create_logical_replication_slot('cdc_slot', 'wal2json');
+
+3. Replace the polling query with:
+   SELECT * FROM pg_logical_slot_get_changes('cdc_slot', NULL, NULL);
+
+4. Remove the watermark file — the replication slot remembers 
+   position automatically
+
+5. This detects HARD deletes too — something polling cannot do
+
+Benefits over polling:
+- Near real-time (milliseconds not 30 seconds)
+- Detects hard deletes
+- No extra load on the database
+- Never misses a change
