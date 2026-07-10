@@ -1,0 +1,632 @@
+Location_ID,Postal_Code,City,State,Region
+LOC-0001,42420,Henderson,Kentucky,South
+LOC-0002,90036,Los Angeles,California,West
+LOC-0003,33311,Fort Lauderdale,Florida,South
+LOC-0004,90032,Los Angeles,California,West
+LOC-0005,28027,Concord,North Carolina,South
+LOC-0006,98103,Seattle,Washington,West
+LOC-0007,76106,Fort Worth,Texas,Central
+LOC-0008,53711,Madison,Wisconsin,Central
+LOC-0009,84084,West Jordan,Utah,West
+LOC-0010,94109,San Francisco,California,West
+LOC-0011,68025,Fremont,Nebraska,Central
+LOC-0012,19140,Philadelphia,Pennsylvania,East
+LOC-0013,84057,Orem,Utah,West
+LOC-0014,90049,Los Angeles,California,West
+LOC-0015,77095,Houston,Texas,Central
+LOC-0016,75080,Richardson,Texas,Central
+LOC-0017,77041,Houston,Texas,Central
+LOC-0018,60540,Naperville,Illinois,Central
+LOC-0019,32935,Melbourne,Florida,South
+LOC-0020,55122,Eagan,Minnesota,Central
+LOC-0021,48185,Westland,Michigan,Central
+LOC-0022,19901,Dover,Delaware,East
+LOC-0023,47150,New Albany,Indiana,Central
+LOC-0024,10024,New York City,New York,East
+LOC-0025,12180,Troy,New York,East
+LOC-0026,90004,Los Angeles,California,West
+LOC-0027,60610,Chicago,Illinois,Central
+LOC-0028,85234,Gilbert,Arizona,West
+LOC-0029,22153,Springfield,Virginia,South
+LOC-0030,10009,New York City,New York,East
+LOC-0031,49201,Jackson,Michigan,Central
+LOC-0032,38109,Memphis,Tennessee,South
+LOC-0033,77070,Houston,Texas,Central
+LOC-0034,35601,Decatur,Alabama,South
+LOC-0035,94122,San Francisco,California,West
+LOC-0036,27707,Durham,North Carolina,South
+LOC-0037,60623,Chicago,Illinois,Central
+LOC-0038,29203,Columbia,South Carolina,South
+LOC-0039,55901,Rochester,Minnesota,Central
+LOC-0040,55407,Minneapolis,Minnesota,Central
+LOC-0041,97206,Portland,Oregon,West
+LOC-0042,55106,Saint Paul,Minnesota,Central
+LOC-0043,80013,Aurora,Colorado,West
+LOC-0044,28205,Charlotte,North Carolina,South
+LOC-0045,60462,Orland Park,Illinois,Central
+LOC-0046,10035,New York City,New York,East
+LOC-0047,50322,Urbandale,Iowa,Central
+LOC-0048,43229,Columbus,Ohio,East
+LOC-0049,37620,Bristol,Tennessee,South
+LOC-0050,19805,Wilmington,Delaware,East
+LOC-0051,61701,Bloomington,Illinois,Central
+LOC-0052,85023,Phoenix,Arizona,West
+LOC-0053,95661,Roseville,California,West
+LOC-0054,64055,Independence,Missouri,Central
+LOC-0055,91104,Pasadena,California,West
+LOC-0056,43055,Newark,Ohio,East
+LOC-0057,53132,Franklin,Wisconsin,Central
+LOC-0058,85254,Scottsdale,Arizona,West
+LOC-0059,95123,San Jose,California,West
+LOC-0060,98105,Seattle,Washington,West
+LOC-0061,98115,Seattle,Washington,West
+LOC-0062,73034,Edmond,Oklahoma,Central
+LOC-0063,90045,Los Angeles,California,West
+LOC-0064,19134,Philadelphia,Pennsylvania,East
+LOC-0065,88220,Carlsbad,New Mexico,West
+LOC-0066,78207,San Antonio,Texas,Central
+LOC-0067,77036,Houston,Texas,Central
+LOC-0068,62521,Decatur,Illinois,Central
+LOC-0069,71203,Monroe,Louisiana,South
+LOC-0070,6824,Fairfield,Connecticut,East
+LOC-0071,75051,Grand Prairie,Texas,Central
+LOC-0072,92374,Redlands,California,West
+LOC-0073,45011,Hamilton,Ohio,East
+LOC-0074,7090,Westfield,New Jersey,East
+LOC-0075,19120,Philadelphia,Pennsylvania,East
+LOC-0076,44312,Akron,Ohio,East
+LOC-0077,80219,Denver,Colorado,West
+LOC-0078,75220,Dallas,Texas,Central
+LOC-0079,37064,Franklin,Tennessee,South
+LOC-0080,90604,Whittier,California,West
+LOC-0081,48601,Saginaw,Michigan,Central
+LOC-0082,44256,Medina,Ohio,East
+LOC-0083,43017,Dublin,Ohio,East
+LOC-0084,48227,Detroit,Michigan,Central
+LOC-0085,38401,Columbia,Tennessee,South
+LOC-0086,33614,Tampa,Florida,South
+LOC-0087,95051,Santa Clara,California,West
+LOC-0088,55044,Lakeville,Minnesota,Central
+LOC-0089,92037,San Diego,California,West
+LOC-0090,77506,Pasadena,Texas,Central
+LOC-0091,94513,Brentwood,California,West
+LOC-0092,27514,Chapel Hill,North Carolina,South
+LOC-0093,7960,Morristown,New Jersey,East
+LOC-0094,45231,Cincinnati,Ohio,East
+LOC-0095,94110,San Francisco,California,West
+LOC-0096,90301,Inglewood,California,West
+LOC-0097,33319,Tamarac,Florida,South
+LOC-0098,80906,Colorado Springs,Colorado,West
+LOC-0099,7109,Belleville,New Jersey,East
+LOC-0100,48180,Taylor,Michigan,Central
+LOC-0101,8701,Lakewood,New Jersey,East
+LOC-0102,22204,Arlington,Virginia,South
+LOC-0103,80004,Arvada,Colorado,West
+LOC-0104,7601,Hackensack,New Jersey,East
+LOC-0105,33710,Saint Petersburg,Florida,South
+LOC-0106,19143,Philadelphia,Pennsylvania,East
+LOC-0107,90805,Long Beach,California,West
+LOC-0108,92345,Hesperia,California,West
+LOC-0109,37130,Murfreesboro,Tennessee,South
+LOC-0110,84041,Layton,Utah,West
+LOC-0111,78745,Austin,Texas,Central
+LOC-0112,1852,Lowell,Massachusetts,East
+LOC-0113,31907,Columbus,Georgia,South
+LOC-0114,6040,Manchester,Connecticut,East
+LOC-0115,78550,Harlingen,Texas,Central
+LOC-0116,85705,Tucson,Arizona,West
+LOC-0117,62301,Quincy,Illinois,Central
+LOC-0118,2038,Franklin,Massachusetts,East
+LOC-0119,33024,Pembroke Pines,Florida,South
+LOC-0120,98198,Des Moines,Washington,West
+LOC-0121,61604,Peoria,Illinois,Central
+LOC-0122,89115,Las Vegas,Nevada,West
+LOC-0123,2886,Warwick,Rhode Island,East
+LOC-0124,33180,Miami,Florida,South
+LOC-0125,28403,Wilmington,North Carolina,South
+LOC-0126,92646,Huntington Beach,California,West
+LOC-0127,40475,Richmond,Kentucky,South
+LOC-0128,80027,Louisville,Colorado,West
+LOC-0129,1841,Lawrence,Massachusetts,East
+LOC-0130,39212,Jackson,Mississippi,South
+LOC-0131,48187,Canton,Michigan,Central
+LOC-0132,10801,New Rochelle,New York,East
+LOC-0133,28052,Gastonia,North Carolina,South
+LOC-0134,32216,Jacksonville,Florida,South
+LOC-0135,47201,Columbus,Indiana,Central
+LOC-0136,13021,Auburn,New York,East
+LOC-0137,73071,Norman,Oklahoma,Central
+LOC-0138,94521,Concord,California,West
+LOC-0139,60068,Park Ridge,Illinois,Central
+LOC-0140,79109,Amarillo,Texas,Central
+LOC-0141,11757,Lindenhurst,New York,East
+LOC-0142,90008,Los Angeles,California,West
+LOC-0143,92024,San Diego,California,West
+LOC-0144,77340,Huntsville,Texas,Central
+LOC-0145,14609,Rochester,New York,East
+LOC-0146,72701,Fayetteville,Arkansas,South
+LOC-0147,92627,Costa Mesa,California,West
+LOC-0148,80134,Parker,Colorado,West
+LOC-0149,30318,Atlanta,Georgia,South
+LOC-0150,64118,Gladstone,Missouri,Central
+LOC-0151,59405,Great Falls,Montana,West
+LOC-0152,48234,Detroit,Michigan,Central
+LOC-0153,33801,Lakeland,Florida,South
+LOC-0154,36116,Montgomery,Alabama,South
+LOC-0155,85204,Mesa,Arizona,West
+LOC-0156,60653,Chicago,Illinois,Central
+LOC-0157,54302,Green Bay,Wisconsin,Central
+LOC-0158,45503,Springfield,Ohio,East
+LOC-0159,92804,Anaheim,California,West
+LOC-0160,98270,Marysville,Washington,West
+LOC-0161,97301,Salem,Oregon,West
+LOC-0162,78041,Laredo,Texas,Central
+LOC-0163,75217,Dallas,Texas,Central
+LOC-0164,43123,Grove City,Ohio,East
+LOC-0165,10011,New York City,New York,East
+LOC-0166,48126,Dearborn,Michigan,Central
+LOC-0167,31088,Warner Robins,Georgia,South
+LOC-0168,94591,Vallejo,California,West
+LOC-0169,92691,Mission Viejo,California,West
+LOC-0170,48307,Rochester Hills,Michigan,Central
+LOC-0171,7060,Plainfield,New Jersey,East
+LOC-0172,85635,Sierra Vista,Arizona,West
+LOC-0173,98661,Vancouver,Washington,West
+LOC-0174,60505,Aurora,Illinois,Central
+LOC-0175,76017,Arlington,Texas,Central
+LOC-0176,40214,Louisville,Kentucky,South
+LOC-0177,75081,Dallas,Texas,Central
+LOC-0178,44105,Cleveland,Ohio,East
+LOC-0179,75701,Tyler,Texas,Central
+LOC-0180,27217,Burlington,North Carolina,South
+LOC-0181,22980,Waynesboro,Virginia,South
+LOC-0182,19013,Chester,Pennsylvania,East
+LOC-0183,27511,Cary,North Carolina,South
+LOC-0184,32137,Palm Coast,Florida,South
+LOC-0185,10550,Mount Vernon,New York,East
+LOC-0186,48205,Detroit,Michigan,Central
+LOC-0187,33012,Hialeah,Florida,South
+LOC-0188,11572,Oceanside,New York,East
+LOC-0189,92105,San Diego,California,West
+LOC-0190,60201,Evanston,Illinois,Central
+LOC-0191,48183,Trenton,Michigan,Central
+LOC-0192,55016,Cottage Grove,Minnesota,Central
+LOC-0193,71111,Bossier City,Louisiana,South
+LOC-0194,50315,Des Moines,Iowa,Central
+LOC-0195,93534,Lancaster,California,West
+LOC-0196,23223,Richmond,Virginia,South
+LOC-0197,28806,Asheville,North Carolina,South
+LOC-0198,92530,Lake Elsinore,California,West
+LOC-0199,68104,Omaha,Nebraska,Central
+LOC-0200,98026,Edmonds,Washington,West
+LOC-0201,92704,Santa Ana,California,West
+LOC-0202,53209,Milwaukee,Wisconsin,Central
+LOC-0203,41042,Florence,Kentucky,South
+LOC-0204,44052,Lorain,Ohio,East
+LOC-0205,7036,Linden,New Jersey,East
+LOC-0206,93905,Salinas,California,West
+LOC-0207,8901,New Brunswick,New Jersey,East
+LOC-0208,17602,Lancaster,Pennsylvania,East
+LOC-0209,3301,Concord,New Hampshire,East
+LOC-0210,21044,Columbia,Maryland,East
+LOC-0211,75043,Garland,Texas,Central
+LOC-0212,6360,Norwich,Connecticut,East
+LOC-0213,22304,Alexandria,Virginia,South
+LOC-0214,43615,Toledo,Ohio,East
+LOC-0215,87401,Farmington,New Mexico,West
+LOC-0216,92503,Riverside,California,West
+LOC-0217,90503,Torrance,California,West
+LOC-0218,78664,Round Rock,Texas,Central
+LOC-0219,92054,Oceanside,California,West
+LOC-0220,33433,Boca Raton,Florida,South
+LOC-0221,23464,Virginia Beach,Virginia,South
+LOC-0222,92563,Murrieta,California,West
+LOC-0223,28540,Jacksonville,North Carolina,South
+LOC-0224,52601,Burlington,Iowa,Central
+LOC-0225,98502,Olympia,Washington,West
+LOC-0226,20016,Washington,District of Columbia,East
+LOC-0227,65109,Jefferson City,Missouri,Central
+LOC-0228,63376,Saint Peters,Missouri,Central
+LOC-0229,61107,Rockford,Illinois,Central
+LOC-0230,33142,Miami,Florida,South
+LOC-0231,78521,Brownsville,Texas,Central
+LOC-0232,10701,Yonkers,New York,East
+LOC-0233,94601,Oakland,California,West
+LOC-0234,28110,Monroe,North Carolina,South
+LOC-0235,20735,Clinton,Maryland,East
+LOC-0236,30076,Roswell,Georgia,South
+LOC-0237,72401,Jonesboro,Arkansas,South
+LOC-0238,47374,Richmond,Indiana,Central
+LOC-0239,94509,Antioch,California,West
+LOC-0240,33030,Homestead,Florida,South
+LOC-0241,46350,La Porte,Indiana,Central
+LOC-0242,48911,Lansing,Michigan,Central
+LOC-0243,44221,Cuyahoga Falls,Ohio,East
+LOC-0244,89502,Reno,Nevada,West
+LOC-0245,22801,Harrisonburg,Virginia,South
+LOC-0246,92025,Escondido,California,West
+LOC-0247,48073,Royal Oak,Michigan,Central
+LOC-0248,20852,Rockville,Maryland,East
+LOC-0249,33065,Coral Springs,Florida,South
+LOC-0250,14215,Buffalo,New York,East
+LOC-0251,33437,Boynton Beach,Florida,South
+LOC-0252,39503,Gulfport,Mississippi,South
+LOC-0253,93727,Fresno,California,West
+LOC-0254,27834,Greenville,North Carolina,South
+LOC-0255,11561,Long Beach,New York,East
+LOC-0256,35630,Florence,Alabama,South
+LOC-0257,31204,Macon,Georgia,South
+LOC-0258,52402,Cedar Rapids,Iowa,Central
+LOC-0259,2908,Providence,Rhode Island,East
+LOC-0260,81001,Pueblo,Colorado,West
+LOC-0261,94533,Fairfield,California,West
+LOC-0262,32725,Deltona,Florida,South
+LOC-0263,42071,Murray,Kentucky,South
+LOC-0264,6457,Middletown,Connecticut,East
+LOC-0265,11520,Freeport,New York,East
+LOC-0266,90660,Pico Rivera,California,West
+LOC-0267,84604,Provo,Utah,West
+LOC-0268,84062,Pleasant Grove,Utah,West
+LOC-0269,30080,Smyrna,Georgia,South
+LOC-0270,24153,Salem,Virginia,South
+LOC-0271,44134,Parma,Ohio,East
+LOC-0272,36608,Mobile,Alabama,South
+LOC-0273,2740,New Bedford,Massachusetts,East
+LOC-0274,75061,Irving,Texas,Central
+LOC-0275,8360,Vineland,New Jersey,East
+LOC-0276,85301,Glendale,Arizona,West
+LOC-0277,14304,Niagara Falls,New York,East
+LOC-0278,27360,Thomasville,North Carolina,South
+LOC-0279,92683,Westminster,California,West
+LOC-0280,38301,Jackson,Tennessee,South
+LOC-0281,75019,Coppell,Texas,Central
+LOC-0282,91767,Pomona,California,West
+LOC-0283,89031,North Las Vegas,Nevada,West
+LOC-0284,18103,Allentown,Pennsylvania,East
+LOC-0285,19711,Newark,Delaware,East
+LOC-0286,85281,Tempe,Arizona,West
+LOC-0287,92677,Laguna Niguel,California,West
+LOC-0288,8302,Bridgeton,New Jersey,East
+LOC-0289,2149,Everett,Massachusetts,East
+LOC-0290,13601,Watertown,New York,East
+LOC-0291,54915,Appleton,Wisconsin,Central
+LOC-0292,98006,Bellevue,Washington,West
+LOC-0293,75002,Allen,Texas,Central
+LOC-0294,79907,El Paso,Texas,Central
+LOC-0295,76051,Grapevine,Texas,Central
+LOC-0296,75007,Carrollton,Texas,Central
+LOC-0297,37167,Smyrna,Tennessee,South
+LOC-0298,98031,Kent,Washington,West
+LOC-0299,70506,Lafayette,Louisiana,South
+LOC-0300,97224,Tigard,Oregon,West
+LOC-0301,60076,Skokie,Illinois,Central
+LOC-0302,75023,Plano,Texas,Central
+LOC-0303,23434,Suffolk,Virginia,South
+LOC-0304,46203,Indianapolis,Indiana,Central
+LOC-0305,7002,Bayonne,New Jersey,East
+LOC-0306,28314,Fayetteville,North Carolina,South
+LOC-0307,27405,Greensboro,North Carolina,South
+LOC-0308,21215,Baltimore,Maryland,East
+LOC-0309,53142,Kenosha,Wisconsin,Central
+LOC-0310,66062,Olathe,Kansas,Central
+LOC-0311,98002,Auburn,Washington,West
+LOC-0312,74133,Tulsa,Oklahoma,Central
+LOC-0313,97756,Redmond,Oregon,West
+LOC-0314,27604,Raleigh,North Carolina,South
+LOC-0315,74403,Muskogee,Oklahoma,Central
+LOC-0316,6450,Meriden,Connecticut,East
+LOC-0317,42104,Bowling Green,Kentucky,South
+LOC-0318,46614,South Bend,Indiana,Central
+LOC-0319,6010,Bristol,Connecticut,East
+LOC-0320,89015,Henderson,Nevada,West
+LOC-0321,99207,Spokane,Washington,West
+LOC-0322,76248,Keller,Texas,Central
+LOC-0323,45014,Fairfield,Ohio,East
+LOC-0324,32127,Port Orange,Florida,South
+LOC-0325,97504,Medford,Oregon,West
+LOC-0326,22901,Charlottesville,Virginia,South
+LOC-0327,59801,Missoula,Montana,West
+LOC-0328,33178,Miami,Florida,South
+LOC-0329,29501,Florence,South Carolina,South
+LOC-0330,97477,Springfield,Oregon,West
+LOC-0331,32712,Apopka,Florida,South
+LOC-0332,19601,Reading,Pennsylvania,East
+LOC-0333,80020,Broomfield,Colorado,West
+LOC-0334,65807,Springfield,Missouri,Central
+LOC-0335,7501,Paterson,New Jersey,East
+LOC-0336,73120,Oklahoma City,Oklahoma,Central
+LOC-0337,23320,Chesapeake,Virginia,South
+LOC-0338,79424,Lubbock,Texas,Central
+LOC-0339,65203,Columbia,Missouri,Central
+LOC-0340,37604,Johnson City,Tennessee,South
+LOC-0341,36830,Auburn,Alabama,South
+LOC-0342,92404,San Bernardino,California,West
+LOC-0343,1453,Leominster,Massachusetts,East
+LOC-0344,59715,Bozeman,Montana,West
+LOC-0345,85345,Peoria,Arizona,West
+LOC-0346,44107,Lakewood,Ohio,East
+LOC-0347,8861,Perth Amboy,New Jersey,East
+LOC-0348,91761,Ontario,California,West
+LOC-0349,91730,Rancho Cucamonga,California,West
+LOC-0350,56560,Moorhead,Minnesota,Central
+LOC-0351,75150,Mesquite,Texas,Central
+LOC-0352,95207,Stockton,California,West
+LOC-0353,32174,Ormond Beach,Florida,South
+LOC-0354,94086,Sunnyvale,California,West
+LOC-0355,3820,Dover,New Hampshire,East
+LOC-0356,17403,York,Pennsylvania,East
+LOC-0357,77840,College Station,Texas,Central
+LOC-0358,63116,Saint Louis,Missouri,Central
+LOC-0359,2169,Quincy,Massachusetts,East
+LOC-0360,95336,Manteca,California,West
+LOC-0361,44240,Kent,Ohio,East
+LOC-0362,76903,San Angelo,Texas,Central
+LOC-0363,84106,Salt Lake City,Utah,West
+LOC-0364,35810,Huntsville,Alabama,South
+LOC-0365,37918,Knoxville,Tennessee,South
+LOC-0366,72209,Little Rock,Arkansas,South
+LOC-0367,48146,Lincoln Park,Michigan,Central
+LOC-0368,43302,Marion,Ohio,East
+LOC-0369,80122,Littleton,Colorado,West
+LOC-0370,5408,Burlington,Vermont,East
+LOC-0371,4401,Bangor,Maine,East
+LOC-0372,38671,Southaven,Mississippi,South
+LOC-0373,47362,New Castle,Indiana,Central
+LOC-0374,48640,Midland,Michigan,Central
+LOC-0375,57103,Sioux Falls,South Dakota,Central
+LOC-0376,80525,Fort Collins,Colorado,West
+LOC-0377,47905,Lafayette,Indiana,Central
+LOC-0378,37042,Clarksville,Tennessee,South
+LOC-0379,95823,Sacramento,California,West
+LOC-0380,91360,Thousand Oaks,California,West
+LOC-0381,2148,Malden,Massachusetts,East
+LOC-0382,1040,Holyoke,Massachusetts,East
+LOC-0383,87105,Albuquerque,New Mexico,West
+LOC-0384,89431,Sparks,Nevada,West
+LOC-0385,92236,Coachella,California,West
+LOC-0386,60126,Elmhurst,Illinois,Central
+LOC-0387,7055,Passaic,New Jersey,East
+LOC-0388,29406,North Charleston,South Carolina,South
+LOC-0389,23602,Newport News,Virginia,South
+LOC-0390,14701,Jamestown,New York,East
+LOC-0391,46544,Mishawaka,Indiana,Central
+LOC-0392,43402,Bowling Green,Ohio,East
+LOC-0393,92253,La Quinta,California,West
+LOC-0394,32303,Tallahassee,Florida,South
+LOC-0395,37211,Nashville,Tennessee,South
+LOC-0396,98226,Bellingham,Washington,West
+LOC-0397,60098,Woodstock,Illinois,Central
+LOC-0398,76117,Haltom City,Texas,Central
+LOC-0399,60090,Wheeling,Illinois,Central
+LOC-0400,29483,Summerville,South Carolina,South
+LOC-0401,71901,Hot Springs,Arkansas,South
+LOC-0402,80112,Englewood,Colorado,West
+LOC-0403,43130,Lancaster,Ohio,East
+LOC-0404,88001,Las Cruces,New Mexico,West
+LOC-0405,35244,Hoover,Alabama,South
+LOC-0406,75034,Frisco,Texas,Central
+LOC-0407,95687,Vacaville,California,West
+LOC-0408,84107,Murray,Utah,West
+LOC-0409,53186,Waukesha,Wisconsin,Central
+LOC-0410,93309,Bakersfield,California,West
+LOC-0411,33068,Pompano Beach,Florida,South
+LOC-0412,45373,Troy,Ohio,East
+LOC-0413,78415,Corpus Christi,Texas,Central
+LOC-0414,90278,Redondo Beach,California,West
+LOC-0415,32839,Orlando,Florida,South
+LOC-0416,7050,Orange,New Jersey,East
+LOC-0417,70601,Lake Charles,Louisiana,South
+LOC-0418,60035,Highland Park,Illinois,Central
+LOC-0419,11550,Hempstead,New York,East
+LOC-0420,46060,Noblesville,Indiana,Central
+LOC-0421,55124,Apple Valley,Minnesota,Central
+LOC-0422,29464,Mount Pleasant,South Carolina,South
+LOC-0423,48310,Sterling Heights,Michigan,Central
+LOC-0424,54703,Eau Claire,Wisconsin,Central
+LOC-0425,78577,Pharr,Texas,Central
+LOC-0426,59102,Billings,Montana,West
+LOC-0427,97030,Gresham,Oregon,West
+LOC-0428,37421,Chattanooga,Tennessee,South
+LOC-0429,83642,Meridian,Idaho,West
+LOC-0430,92307,Apple Valley,California,West
+LOC-0431,60440,Bolingbrook,Illinois,Central
+LOC-0432,55369,Maple Grove,Minnesota,Central
+LOC-0433,95695,Woodland,California,West
+LOC-0434,77489,Missouri City,Texas,Central
+LOC-0435,77581,Pearland,Texas,Central
+LOC-0436,94403,San Mateo,California,West
+LOC-0437,49505,Grand Rapids,Michigan,Central
+LOC-0438,93277,Visalia,California,West
+LOC-0439,66212,Overland Park,Kansas,Central
+LOC-0440,92592,Temecula,California,West
+LOC-0441,92399,Yucaipa,California,West
+LOC-0442,2151,Revere,Massachusetts,East
+LOC-0443,77301,Conroe,Texas,Central
+LOC-0444,60477,Tinley Park,Illinois,Central
+LOC-0445,52001,Dubuque,Iowa,Central
+LOC-0446,48127,Dearborn Heights,Michigan,Central
+LOC-0447,87505,Santa Fe,New Mexico,West
+LOC-0448,28601,Hickory,North Carolina,South
+LOC-0449,60188,Carol Stream,Illinois,Central
+LOC-0450,56301,Saint Cloud,Minnesota,Central
+LOC-0451,33161,North Miami,Florida,South
+LOC-0452,46226,Lawrence,Indiana,Central
+LOC-0453,33317,Plantation,Florida,South
+LOC-0454,34952,Port Saint Lucie,Florida,South
+LOC-0455,29730,Rock Hill,South Carolina,South
+LOC-0456,79762,Odessa,Texas,Central
+LOC-0457,53214,West Allis,Wisconsin,Central
+LOC-0458,91911,Chula Vista,California,West
+LOC-0459,66502,Manhattan,Kansas,Central
+LOC-0460,16602,Altoona,Pennsylvania,East
+LOC-0461,80229,Thornton,Colorado,West
+LOC-0462,61821,Champaign,Illinois,Central
+LOC-0463,47401,Bloomington,Indiana,Central
+LOC-0464,71854,Texarkana,Arkansas,South
+LOC-0465,78539,Edinburg,Texas,Central
+LOC-0466,77520,Baytown,Texas,Central
+LOC-0467,46142,Greenwood,Indiana,Central
+LOC-0468,90712,Lakewood,California,West
+LOC-0469,2895,Woonsocket,Rhode Island,East
+LOC-0470,54880,Superior,Wisconsin,Central
+LOC-0471,76021,Bedford,Texas,Central
+LOC-0472,98042,Covington,Washington,West
+LOC-0473,74012,Broken Arrow,Oklahoma,Central
+LOC-0474,33023,Miramar,Florida,South
+LOC-0475,33021,Hollywood,Florida,South
+LOC-0476,77536,Deer Park,Texas,Central
+LOC-0477,67212,Wichita,Kansas,Central
+LOC-0478,78501,Mcallen,Texas,Central
+LOC-0479,52240,Iowa City,Iowa,Central
+LOC-0480,83704,Boise,Idaho,West
+LOC-0481,2920,Cranston,Rhode Island,East
+LOC-0482,61032,Freeport,Illinois,Central
+LOC-0483,77642,Port Arthur,Texas,Central
+LOC-0484,95610,Citrus Heights,California,West
+LOC-0485,75056,The Colony,Texas,Central
+LOC-0486,98052,Redmond,Washington,West
+LOC-0487,32114,Daytona Beach,Florida,South
+LOC-0488,86442,Bullhead City,Arizona,West
+LOC-0489,46368,Portage,Indiana,Central
+LOC-0490,58103,Fargo,North Dakota,Central
+LOC-0491,46514,Elkhart,Indiana,Central
+LOC-0492,91776,San Gabriel,California,West
+LOC-0493,33063,Margate,Florida,South
+LOC-0494,30328,Sandy Springs,Georgia,South
+LOC-0495,44060,Mentor,Ohio,East
+LOC-0496,73505,Lawton,Oklahoma,Central
+LOC-0497,23666,Hampton,Virginia,South
+LOC-0498,13440,Rome,New York,East
+LOC-0499,54601,La Crosse,Wisconsin,Central
+LOC-0500,83501,Lewiston,Idaho,West
+LOC-0501,39401,Hattiesburg,Mississippi,South
+LOC-0502,94526,Danville,California,West
+LOC-0503,48858,Mount Pleasant,Michigan,Central
+LOC-0504,84321,Logan,Utah,West
+LOC-0505,6708,Waterbury,Connecticut,East
+LOC-0506,30605,Athens,Georgia,South
+LOC-0507,4240,Lewiston,Maine,East
+LOC-0508,61832,Danville,Illinois,Central
+LOC-0509,85323,Avondale,Arizona,West
+LOC-0510,30062,Marietta,Georgia,South
+LOC-0511,85364,Yuma,Arizona,West
+LOC-0512,54401,Wausau,Wisconsin,Central
+LOC-0513,99301,Pasco,Washington,West
+LOC-0514,60302,Oak Park,Illinois,Central
+LOC-0515,32503,Pensacola,Florida,South
+LOC-0516,77573,League City,Texas,Central
+LOC-0517,20877,Gaithersburg,Maryland,East
+LOC-0518,84043,Lehi,Utah,West
+LOC-0519,35401,Tuscaloosa,Alabama,South
+LOC-0520,92553,Moreno Valley,California,West
+LOC-0521,40324,Georgetown,Kentucky,South
+LOC-0522,80538,Loveland,Colorado,West
+LOC-0523,85224,Chandler,Arizona,West
+LOC-0524,59601,Helena,Montana,West
+LOC-0525,63122,Kirkwood,Missouri,Central
+LOC-0526,76706,Waco,Texas,Central
+LOC-0527,48066,Roseville,Michigan,Central
+LOC-0528,60423,Frankfort,Illinois,Central
+LOC-0529,18018,Bethlehem,Pennsylvania,East
+LOC-0530,55113,Roseville,Minnesota,Central
+LOC-0531,68801,Grand Island,Nebraska,Central
+LOC-0532,55125,Woodbury,Minnesota,Central
+LOC-0533,48237,Oak Park,Michigan,Central
+LOC-0534,72756,Rogers,Arkansas,South
+LOC-0535,88101,Clovis,New Mexico,West
+LOC-0536,33458,Jupiter,Florida,South
+LOC-0537,93101,Santa Barbara,California,West
+LOC-0538,75104,Cedar Hill,Texas,Central
+LOC-0539,68701,Norfolk,Nebraska,Central
+LOC-0540,84020,Draper,Utah,West
+LOC-0541,48104,Ann Arbor,Michigan,Central
+LOC-0542,91941,La Mesa,California,West
+LOC-0543,83201,Pocatello,Idaho,West
+LOC-0544,49423,Holland,Michigan,Central
+LOC-0545,6460,Milford,Connecticut,East
+LOC-0546,60089,Buffalo Grove,Illinois,Central
+LOC-0547,92630,Lake Forest,California,West
+LOC-0548,96003,Redding,California,West
+LOC-0549,95928,Chico,California,West
+LOC-0550,13501,Utica,New York,East
+LOC-0551,72032,Conway,Arkansas,South
+LOC-0552,82001,Cheyenne,Wyoming,West
+LOC-0553,42301,Owensboro,Kentucky,South
+LOC-0554,83605,Caldwell,Idaho,West
+LOC-0555,70065,Kenner,Louisiana,South
+LOC-0556,3060,Nashua,New Hampshire,East
+LOC-0557,38134,Bartlett,Tennessee,South
+LOC-0558,94061,Redwood City,California,West
+LOC-0559,37087,Lebanon,Tennessee,South
+LOC-0560,93454,Santa Maria,California,West
+LOC-0561,60016,Des Plaines,Illinois,Central
+LOC-0562,98632,Longview,Washington,West
+LOC-0563,37075,Hendersonville,Tennessee,South
+LOC-0564,50701,Waterloo,Iowa,Central
+LOC-0565,2138,Cambridge,Massachusetts,East
+LOC-0566,60067,Palatine,Illinois,Central
+LOC-0567,1915,Beverly,Massachusetts,East
+LOC-0568,97405,Eugene,Oregon,West
+LOC-0569,93030,Oxnard,California,West
+LOC-0570,98059,Renton,Washington,West
+LOC-0571,60025,Glenview,Illinois,Central
+LOC-0572,33445,Delray Beach,Florida,South
+LOC-0573,80022,Commerce City,Colorado,West
+LOC-0574,77590,Texas City,Texas,Central
+LOC-0575,27893,Wilson,North Carolina,South
+LOC-0576,87124,Rio Rancho,New Mexico,West
+LOC-0577,27534,Goldsboro,North Carolina,South
+LOC-0578,98208,Everett,Washington,West
+LOC-0579,90640,Montebello,California,West
+LOC-0580,92020,El Cajon,California,West
+LOC-0581,77705,Beaumont,Texas,Central
+LOC-0582,33407,West Palm Beach,Florida,South
+LOC-0583,79605,Abilene,Texas,Central
+LOC-0584,61761,Normal,Illinois,Central
+LOC-0585,63301,Saint Charles,Missouri,Central
+LOC-0586,60174,Saint Charles,Illinois,Central
+LOC-0587,93010,Camarillo,California,West
+LOC-0588,97123,Hillsboro,Oregon,West
+LOC-0589,91505,Burbank,California,West
+LOC-0590,95351,Modesto,California,West
+LOC-0591,67846,Garden City,Kansas,Central
+LOC-0592,8401,Atlantic City,New Jersey,East
+LOC-0593,80501,Longmont,Colorado,West
+LOC-0594,95616,Davis,California,West
+LOC-0595,26003,Wheeling,West Virginia,East
+LOC-0596,95037,Morgan Hill,California,West
+LOC-0597,7011,Clifton,New Jersey,East
+LOC-0598,53081,Sheboygan,Wisconsin,Central
+LOC-0599,30344,East Point,Georgia,South
+LOC-0600,57701,Rapid City,South Dakota,Central
+LOC-0601,1810,Andover,Massachusetts,East
+LOC-0602,34741,Kissimmee,Florida,South
+LOC-0603,6484,Shelton,Connecticut,East
+LOC-0604,6810,Danbury,Connecticut,East
+LOC-0605,52302,Marion,Iowa,Central
+LOC-0606,32771,Sanford,Florida,South
+LOC-0607,78666,San Marcos,Texas,Central
+LOC-0608,80634,Greeley,Colorado,West
+LOC-0609,76063,Mansfield,Texas,Central
+LOC-0610,44035,Elyria,Ohio,East
+LOC-0611,83301,Twin Falls,Idaho,West
+LOC-0612,33134,Coral Gables,Florida,South
+LOC-0613,60441,Romeoville,Illinois,Central
+LOC-0614,1752,Marlborough,Massachusetts,East
+LOC-0615,20707,Laurel,Maryland,East
+LOC-0616,77803,Bryan,Texas,Central
+LOC-0617,71603,Pine Bluff,Arkansas,South
+LOC-0618,57401,Aberdeen,South Dakota,Central
+LOC-0619,21740,Hagerstown,Maryland,East
+LOC-0620,7017,East Orange,New Jersey,East
+LOC-0621,60004,Arlington Heights,Illinois,Central
+LOC-0622,60543,Oswego,Illinois,Central
+LOC-0623,55433,Coon Rapids,Minnesota,Central
+LOC-0624,92672,San Clemente,California,West
+LOC-0625,94568,Dublin,California,West
+LOC-0626,93405,San Luis Obispo,California,West
+LOC-0627,72762,Springdale,Arkansas,South
+LOC-0628,95240,Lodi,California,West
+LOC-0629,77571,La Porte,Texas,Central
+LOC-0630,45040,Mason,Ohio,East
+LOC-0631,30188,Woodstock,Georgia,South
