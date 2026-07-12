@@ -1,0 +1,5 @@
+{"op": "INSERT", "table": "customers", "ts": "2026-07-09 19:16:03.526497+00:00", "data": {"id": 1, "name": "John Doe", "email": "john@example.com", "city": "New York"}}
+{"op": "INSERT", "table": "customers", "ts": "2026-07-09 19:16:03.526497+00:00", "data": {"id": 2, "name": "Jane Smith", "email": "jane@example.com", "city": "London"}}
+{"op": "INSERT", "table": "customers", "ts": "2026-07-09 19:16:03.526497+00:00", "data": {"id": 3, "name": "Mike Johnson", "email": "mike@example.com", "city": "Toronto"}}
+{"op": "INSERT", "table": "customers", "ts": "2026-07-09 19:16:03.526497+00:00", "data": {"id": 4, "name": "Sarah Brown", "email": "sarah@example.com", "city": "Sydney"}}
+{"op": "INSERT", "table": "customers", "ts": "2026-07-09 19:16:03.526497+00:00", "data": {"id": 5, "name": "David Wilson", "email": "david@example.com", "city": "Lagos"}}
