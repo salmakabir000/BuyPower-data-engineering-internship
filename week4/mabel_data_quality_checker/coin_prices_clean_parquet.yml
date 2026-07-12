@@ -1,0 +1,18 @@
+dataset: coin_prices (parquet, clean)
+source:
+  type: parquet
+  path: coin_prices_clean.parquet
+checks:
+  - column: id
+    type: not_null
+    severity: critical
+  - column: id
+    type: unique
+    severity: critical
+  - column: symbol
+    type: in_set
+    values: [btc, eth]
+    severity: warning
+  - type: row_count_min
+    value: 50
+    severity: critical
