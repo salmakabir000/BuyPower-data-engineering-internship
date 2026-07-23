@@ -109,3 +109,30 @@ without needing manual unzipping. It uses in-memory caching
 for actors, repos and event types to avoid repeated database 
 lookups, making the load significantly faster. Deduplication 
 is handled via ON CONFLICT (event_id) DO NOTHING.
+## Repo Language Analysis
+Fetched primary programming languages for repos where the top 
+20 issue-creating actors were active, using GitHub's REST API.
+
+Due to GitHub's unauthenticated rate limit (60 requests/hour), 
+only 56 of 104 actor-repo pairs were retrieved before hitting 
+the limit.
+
+### Sample Results (github-actions[bot])
+Most common languages found:
+- TypeScript: 6 repos
+- Python: 6 repos
+- Shell: 4 repos
+- JavaScript: 3 repos
+- Markdown: 3 repos
+- Go, PHP, C, C++: 2 repos each
+
+### Note
+github-actions[bot] dominates the top actors list since it's 
+an automated bot that runs on nearly every repo using GitHub 
+Actions. This confirms the earlier data quality observation 
+that bot accounts significantly skew raw activity metrics.
+
+To get complete language data for all 104 pairs, an 
+authenticated GitHub token would be needed to raise the 
+rate limit from 60 to 5000 requests/hour.
+
