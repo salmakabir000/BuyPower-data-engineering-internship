@@ -1,0 +1,29 @@
+# Virtual environment
+venv/
+.env/
+env/
+
+# Large data files
+*.log
+*.gz
+*.parquet
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Database files
+*.db
+*.sqlite
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+
+# Environment variables
+.env
