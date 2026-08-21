@@ -1,0 +1,10 @@
+{
+  "dataset": "trips",
+  "year": 2024,
+  "month": 4,
+  "day": 23,
+  "files": [
+    "part-001.parquet"
+  ],
+  "rows": 100084
+}
