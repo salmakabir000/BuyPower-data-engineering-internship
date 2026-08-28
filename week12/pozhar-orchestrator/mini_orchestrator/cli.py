@@ -2,78 +2,85 @@
 cli.py - command-line interface for mini_orchestrator.
 
 Usage:
-    python -m mini_orchestrator run path/to/dag_file.py [--dag NAME]
-    python -m mini_orchestrator history [--dag NAME] [--limit N]
-    python -m mini_orchestrator status DAG_NAME YYYY-MM-DD
+    mini_orchestrator list
+    mini_orchestrator run <dag_name> [--parallel]
+    mini_orchestrator status <dag_name>
+    mini_orchestrator logs <dag_name> <run_id>
+
+DAGs are auto-discovered from a "dags/" folder in the current directory
+(override with --dags-dir).
 """
 
 import argparse
-import importlib.util
 import sys
-from pathlib import Path
+from datetime import datetime
 
+from .registry import discover_dags
 from .runner import Runner, CycleError
 from .state import StateStore
 
 
-def _load_dag_functions(file_path):
-    """Imports a Python file and returns every function in it that was
-    built with @dag (found via the marker the decorator attaches)."""
-    file_path = Path(file_path).resolve()
-    if not file_path.exists():
-        print(f"Error: file not found: {file_path}", file=sys.stderr)
-        sys.exit(1)
+def _parse_ts(ts):
+    """ISO timestamp string -> datetime, or None if ts is None/empty."""
+    if not ts:
+        return None
+    return datetime.fromisoformat(ts)
 
-    spec = importlib.util.spec_from_file_location(file_path.stem, file_path)
-    module = importlib.util.module_from_spec(spec)
-    try:
-        spec.loader.exec_module(module)
-    except Exception as e:
-        print(f"Error: failed to import '{file_path}': {e}", file=sys.stderr)
-        sys.exit(1)
 
-    dag_funcs = [
-        obj
-        for obj in vars(module).values()
-        if callable(obj) and hasattr(obj, "_mini_orchestrator_dag_name")
-    ]
-    return dag_funcs
+def _fmt_started(ts):
+    dt = _parse_ts(ts)
+    return dt.strftime("%Y-%m-%d %H:%M:%S") if dt else "-"
+
+
+def _fmt_duration(started_at, finished_at):
+    start = _parse_ts(started_at)
+    end = _parse_ts(finished_at)
+    if not start or not end:
+        return "-"
+    return f"{(end - start).total_seconds():.1f}s"
+
+
+def _fmt_result(store, run_row):
+    """'success' or 'failed (task_name: ExceptionType)'."""
+    if run_row["status"] != "failed":
+        return run_row["status"] or "running"
+
+    detail = store.get_run(run_row["run_id"])
+    failed_task = next((t for t in detail["tasks"] if t["status"] == "failed"), None)
+    if failed_task is None:
+        return "failed"
+
+    exc_type = "Error"
+    if failed_task["error_message"] and ":" in failed_task["error_message"]:
+        exc_type = failed_task["error_message"].split(":", 1)[0]
+    return f"failed ({failed_task['task_name']}: {exc_type})"
+
+
+def cmd_list(args):
+    dags = discover_dags(args.dags_dir)
+    if not dags:
+        print(f"No DAGs found in '{args.dags_dir}/'.")
+        return
+    print("Registered DAGs:")
+    for name in sorted(dags):
+        print(f"  - {name}")
 
 
 def cmd_run(args):
-    dag_funcs = _load_dag_functions(args.file)
-
-    if not dag_funcs:
-        print(f"Error: no @dag-decorated function found in '{args.file}'", file=sys.stderr)
-        sys.exit(1)
-
-    if args.dag:
-        matches = [f for f in dag_funcs if f._mini_orchestrator_dag_name == args.dag]
-        if not matches:
-            available = [f._mini_orchestrator_dag_name for f in dag_funcs]
-            print(
-                f"Error: no DAG named '{args.dag}' in '{args.file}'. "
-                f"Available: {available}",
-                file=sys.stderr,
-            )
-            sys.exit(1)
-        dag_func = matches[0]
-    elif len(dag_funcs) == 1:
-        dag_func = dag_funcs[0]
-    else:
-        available = [f._mini_orchestrator_dag_name for f in dag_funcs]
+    dags = discover_dags(args.dags_dir)
+    if args.dag_name not in dags:
+        available = sorted(dags)
         print(
-            f"Error: multiple DAGs found in '{args.file}': {available}. "
-            "Use --dag NAME to pick one.",
+            f"Error: no DAG named '{args.dag_name}' found in '{args.dags_dir}/'. "
+            f"Available: {available}",
             file=sys.stderr,
         )
         sys.exit(1)
 
-    built_dag = dag_func()
-
+    built_dag = dags[args.dag_name]()
     runner = Runner()
     try:
-        run_id = runner.run(built_dag)
+        run_id = runner.run(built_dag, parallel=args.parallel)
     except CycleError as e:
         print(f"Error: {e}", file=sys.stderr)
         sys.exit(1)
@@ -82,63 +89,73 @@ def cmd_run(args):
     sys.exit(0 if detail["run"]["status"] == "success" else 1)
 
 
-def cmd_history(args):
-    store = StateStore()
-    runs = store.list_runs(dag_name=args.dag, limit=args.limit)
-
-    if not runs:
-        scope = f"for DAG '{args.dag}'" if args.dag else ""
-        print(f"No runs found {scope}".strip())
-        return
-
-    print(f"{'run_id':<8} {'dag_name':<20} {'status':<10} {'started_at':<28} {'finished_at':<28}")
-    print("-" * 96)
-    for r in runs:
-        print(
-            f"{r['run_id']:<8} {r['dag_name']:<20} {r['status']:<10} "
-            f"{r['started_at']:<28} {str(r['finished_at']):<28}"
-        )
-
-
 def cmd_status(args):
     store = StateStore()
-    runs = store.runs_on_date(args.dag_name, args.date)
+    runs = store.recent_runs(args.dag_name, limit=10)
 
+    print(f"DAG: {args.dag_name}")
     if not runs:
-        print(f"No runs of '{args.dag_name}' found on {args.date}.")
+        print("No runs found.")
         return
 
+    print(f"{'Run ID':<9} | {'Started':<20} | {'Duration':<8} | Result")
     for r in runs:
-        print(f"Run {r['run_id']}: status={r['status']}  started_at={r['started_at']}")
-        detail = store.get_run(r["run_id"])
-        for t in detail["tasks"]:
-            line = f"    {t['task_name']}: {t['status']}"
-            if t["error"]:
-                line += f" (error: {t['error']})"
-            print(line)
+        run_id = r["run_id"]
+        started = _fmt_started(r["started_at"])
+        duration = _fmt_duration(r["started_at"], r["finished_at"])
+        result = _fmt_result(store, r)
+        print(f"{run_id:<9} | {started:<20} | {duration:<8} | {result}")
+
+
+def cmd_logs(args):
+    store = StateStore()
+    detail = store.get_run(args.run_id)
+
+    if detail is None or detail["run"]["dag_name"] != args.dag_name:
+        print(f"No run '{args.run_id}' found for DAG '{args.dag_name}'.")
+        return
+
+    run = detail["run"]
+    print(f"DAG: {run['dag_name']}  Run ID: {run['run_id']}  Status: {run['status']}")
+    print(f"Started:  {_fmt_started(run['started_at'])}")
+    print(f"Finished: {_fmt_started(run['finished_at'])}")
+    print()
+    print(f"{'Task':<15} | {'Status':<8} | {'Duration':<8} | Error")
+    for t in detail["tasks"]:
+        duration = _fmt_duration(t["started_at"], t["finished_at"])
+        error = t["error_message"] or ""
+        print(f"{t['task_name']:<15} | {t['status']:<8} | {duration:<8} | {error}")
 
 
 def main():
     parser = argparse.ArgumentParser(
         prog="mini_orchestrator",
-        description="A tiny DAG orchestrator - define pipelines as Python, run them, check history.",
+        description="A tiny DAG orchestrator.",
+    )
+    parser.add_argument(
+        "--dags-dir", default="dags", help="Folder to scan for DAG files (default: dags/)"
     )
     subparsers = parser.add_subparsers(dest="command", required=True)
 
-    run_p = subparsers.add_parser("run", help="Run a DAG defined in a Python file")
-    run_p.add_argument("file", help="Path to the .py file containing the @dag function")
-    run_p.add_argument("--dag", help="DAG name to run, if the file has more than one")
+    list_p = subparsers.add_parser("list", help="List registered DAGs")
+    list_p.set_defaults(func=cmd_list)
+
+    run_p = subparsers.add_parser("run", help="Run a DAG once")
+    run_p.add_argument("dag_name")
+    run_p.add_argument(
+        "--parallel", action="store_true",
+        help="Run tasks at the same dependency level concurrently"
+    )
     run_p.set_defaults(func=cmd_run)
 
-    hist_p = subparsers.add_parser("history", help="List recent DAG runs")
-    hist_p.add_argument("--dag", help="Only show runs for this DAG name")
-    hist_p.add_argument("--limit", type=int, default=20, help="Max runs to show (default 20)")
-    hist_p.set_defaults(func=cmd_history)
-
-    status_p = subparsers.add_parser("status", help="Check if a DAG succeeded on a given date")
-    status_p.add_argument("dag_name", help="DAG name, e.g. crypto_etl")
-    status_p.add_argument("date", help="Date in YYYY-MM-DD format")
+    status_p = subparsers.add_parser("status", help="Show last 10 runs of a DAG")
+    status_p.add_argument("dag_name")
     status_p.set_defaults(func=cmd_status)
+
+    logs_p = subparsers.add_parser("logs", help="Show task statuses/timing for one run")
+    logs_p.add_argument("dag_name")
+    logs_p.add_argument("run_id")
+    logs_p.set_defaults(func=cmd_logs)
 
     args = parser.parse_args()
     args.func(args)

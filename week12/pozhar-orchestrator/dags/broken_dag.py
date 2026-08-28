@@ -1,13 +1,17 @@
 from mini_orchestrator import dag, task
 
+
 def extract_crypto():
     print("      extracting...")
+
 
 def transform_that_fails():
     raise ValueError("bad API response")
 
+
 def load_to_warehouse():
     print("      loading...")
+
 
 @dag(name="broken_pipeline", schedule=None)
 def broken_pipeline():
