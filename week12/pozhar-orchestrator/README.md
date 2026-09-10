@@ -1,91 +1,85 @@
-# Week 12-13 - Simple Orchestrator (DAG Runner)
+# Week 14 - Simple Scheduler with Retries
 
-## What this does
-`mini_orchestrator` is a small DAG (Directed Acyclic Graph) orchestrator - a
-simplified version of what Airflow/Dagster/Prefect do under the hood. DAGs
-are defined declaratively as Python code:
+Extends the Week 12-13 orchestrator with a scheduler that runs DAGs on a
+cron schedule and automatically retries failed tasks with exponential
+backoff.
 
+## New CLI command
+
+mini_orchestrator scheduler start [--interval SECONDS]
+
+Runs in the foreground. Every `interval` seconds (default 30), it checks
+every registered DAG's `schedule` (a cron expression) and triggers any DAG
+whose scheduled time has passed since the last check. Logs every decision,
+including ticks where nothing was due.
+
+## Retries
+Each task now accepts `retries` (default 3) and `retry_delay_seconds`
+(default 60):
 ```python
-from mini_orchestrator import dag, task
-
-@dag(name="crypto_etl", schedule="0 * * * *")
-def crypto_etl():
-    extract = task("extract", run=extract_crypto)
-    transform = task("transform", run=transform_crypto, depends_on=[extract])
-    load = task("load", run=load_to_warehouse, depends_on=[transform])
+task("extract", run=extract_crypto, retries=3, retry_delay_seconds=60)
 ```
+On failure, a task retries using exponential backoff with jitter:
 
-## CLI commands
-- `mini_orchestrator list` - list all registered DAGs (auto-discovered from `dags/`)
-- `mini_orchestrator run <dag_name> [--parallel]` - run a DAG once
-- `mini_orchestrator status <dag_name>` - show the last 10 runs of a DAG
-- `mini_orchestrator logs <dag_name> <run_id>` - show task-by-task status/timing for one run
+delay = retry_delay_seconds * 2^(attempt - 1) + random(0, 30)
 
-## Task state machine
+Errors are classified as retryable or not (`retry.py`). `ValueError`,
+`TypeError`, `KeyError`, and a custom `NonRetryableError` skip straight to
+`failed_permanent` with no retries, since these usually mean a logic bug
+that won't fix itself between attempts. Everything else (network/timeout
+errors) is retried.
 
+## Fixed delay vs. exponential backoff
 
+**Fixed delay** means waiting the same amount of time between every retry -
+e.g. always 60 seconds, no matter how many times it's failed. This is
+simple and fine for something that fails rarely and recovers fast, like a
+single dropped network packet. The downside shows up when many things fail
+at once, or a downstream system goes down for a while: everything retries
+at the same steady rate, which can pile more load onto a system that's
+already struggling, and doesn't give it meaningfully more time to recover
+on later attempts than on earlier ones.
 
+**Exponential backoff** doubles the wait time after each failure (60s, then
+120s, then 240s...), so retries naturally space out further apart the
+longer something stays broken. Early on it retries almost as fast as fixed
+delay would, but if the problem persists, it backs off aggressively instead
+of continuing to hammer a struggling system. Adding jitter (a small random
+extra wait) on top prevents many tasks that failed at the same moment from
+all retrying in a synchronized burst - which would create it own new load
+spike right when a recovering system is most vulnerable.
 
-## Design doc
+**When to use which:** fixed delay is fine for something you're confident
+fails only briefly (e.g. a rate-limited API with a known cooldown).
+Exponential backoff with jitter is the safer default for anything talking
+to another service you don't fully control, since it degrades gracefully
+whether the failure lasts one second or ten minutes.
 
-**How DAGs are defined and discovered.** A DAG is just a name plus a
-dictionary of `Task` objects, where each task stores its own name, the
-function to run, and the names of tasks it depends on. The `@dag` decorator
-and `task()` function let you write DAGs declaratively rather than manually
-building graph objects: `task()` uses a small internal stack to know which
-DAG is "currently being defined," so it can register itself automatically
-when called inside a `@dag`-decorated function. For the CLI to run a DAG by
-name (`mini_orchestrator run crypto_etl`) instead of needing a file path, I
-added a `registry.py` module that scans a `dags/` folder, imports every
-`.py` file in it, and collects any function marked by the `@dag` decorator
-into a `{name: function}` dictionary. This mirrors how Airflow's own
-"dags folder" concept works, just far simpler.
+## Overlap protection
+Before triggering a DAG, the scheduler checks if that DAG name is already
+in `running_dags` (an in-memory set, tracked per scheduler process). If so,
+it skips the trigger and logs why - no two runs of the same DAG ever
+execute at once. Verified live: a DAG scheduled every minute with a 90s
+task correctly triggers, sleeps, gets skipped once when its next scheduled
+minute arrives mid-run, then triggers again once free.
 
-**How execution and failure handling work.** The runner works in two
-phases. First, it computes a valid execution order using Kahn's topological
-sort algorithm - repeatedly finding tasks with no unsatisfied dependencies,
-"running" them structurally, and checking what that unblocks next. This
-also catches cycles immediately (a DAG where two tasks depend on each
-other) before any real code executes. Second, it walks that order and, for
-each task, checks whether every one of its dependencies actually succeeded
-during this run. If so, the task executes for real and its result
-(success/failed) is recorded. If not, the task is marked `skipped` without
-running it at all. This check-then-skip approach means failure cascades
-happen automatically: if task B fails, task C (which depends on B) sees
-that B's status isn't `success`, so C gets skipped too, and this continues
-down the whole chain with no extra "propagate failure" code needed. For the
-stretch goal, I added an optional `--parallel` mode that groups tasks into
-"levels" by dependency depth (a task's level is one more than the deepest
-level among its dependencies) and runs every task in a level concurrently
-using `ThreadPoolExecutor`, since tasks at the same level can never depend
-on each other. I verified this actually saves time, not just structurally:
-two independent 1-second tasks took 2.1s sequentially but only 1.1s in
-parallel.
+## Timezone support (stretch goal)
+A DAG can declare `timezone="Africa/Lagos"`, and its cron expression is
+evaluated in that timezone instead of UTC:
+```python
+@dag(name="daily_report", schedule="0 9 * * *", timezone="Africa/Lagos")
+```
+This means "9am Lagos time," not "9am UTC" - the scheduler converts both
+its last-check time and the current time into the DAG's timezone before
+asking croniter whether a fire time has passed.
 
-**How state is persisted and queried.** Every run writes to a SQLite
-database at `~/.mini_orchestrator/state.db`, using two tables: `dag_runs`
-(one row per run - overall status, start/finish time) and `task_runs` (one
-row per task within a run - its own status, timing, and error message if it
-failed). Run IDs are short random hex strings rather than auto-incrementing
-numbers, generated with `uuid.uuid4().hex[:6]`, to match a more realistic
-production ID style. The `status` command queries `dag_runs` for the most
-recent runs of a given DAG name, and for any failed run, looks up which
-specific task failed and extracts the exception type from its stored error
-message to build a message like `failed (transform: ValueError)`. The
-`logs` command does a similar lookup but returns full task-level detail for
-one specific run, which is what actually answers "why did this fail" rather
-than just "did it fail."
+## Demo files
+- `demo_scheduled_dag.py` - runs every 2 minutes, used for the 10-minute
+  unattended scheduler demo (see `scheduler_log_screenshot.png` - 18
+  successful triggers over 35+ minutes, no manual intervention)
+- `flaky_demo_dag.py` - fails twice, succeeds on the 3rd attempt, shows
+  retry + backoff timing
+- `always_fails_dag.py` - always fails, shows retries exhausting into
+  `failed_permanent`
 
-## Wired to the real Week 4 ETL
-`dags/crypto_etl_dag.py` wraps the actual CoinGecko ETL from Week 4
-(`extract`/`transform`/`load` functions, unchanged) as a 3-task DAG. Since a
-Task's `run()` function takes no arguments, I used a `context` dict that
-each task reads from and writes to, so `extract`'s output becomes
-`transform`'s input, and so on. Verified end-to-end against the live
-CoinGecko API - see `example_runs_screenshot.png` for 5 successful runs.
-
-## Example files
-- `dags/example_dag.py` - a DAG where every task succeeds
-- `dags/broken_dag.py` - a DAG where `transform` fails, demonstrating the
-  failure -> skip cascade
-- `dags/crypto_etl_dag.py` - the real Week 4 ETL wrapped as a DAG
+## New task/run states this week

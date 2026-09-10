@@ -12,7 +12,10 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 DEFAULT_DB_PATH = Path.home() / ".mini_orchestrator" / "state.db"
-VALID_STATUSES = {"pending", "running", "success", "failed", "skipped"}
+VALID_STATUSES = {
+    "pending", "running", "success", "failed", "skipped",
+    "retrying", "failed_permanent",
+}
 
 
 def _now():
@@ -111,11 +114,18 @@ class StateStore:
                     "WHERE run_id = ? AND task_name = ?",
                     (status, _now(), run_id, task_name),
                 )
-            elif status in ("success", "failed", "skipped"):
+            elif status in ("success", "failed", "skipped", "failed_permanent"):
                 conn.execute(
                     "UPDATE task_runs SET status = ?, finished_at = ?, error_message = ? "
                     "WHERE run_id = ? AND task_name = ?",
                     (status, _now(), error_message, run_id, task_name),
+                )
+            elif status == "retrying":
+                # between attempts - not finished yet, just record the latest error
+                conn.execute(
+                    "UPDATE task_runs SET status = ?, error_message = ? "
+                    "WHERE run_id = ? AND task_name = ?",
+                    (status, error_message, run_id, task_name),
                 )
             else:
                 conn.execute(

@@ -1,23 +1,30 @@
 """
 runner.py - executes a DAG.
 
-Two execution modes:
-  - sequential (default): topological sort, then run tasks one at a time
-  - parallel (--parallel flag): tasks are grouped into "levels" by
-    dependency depth (a task's level = 1 + the deepest level among its
-    dependencies). Tasks within the same level don't depend on each other
-    by definition, so they can safely run concurrently via
-    ThreadPoolExecutor. We wait for a whole level to finish before moving
-    to the next, since the next level may depend on this one's results.
+Execution modes: sequential (default) or parallel (--parallel, groups tasks
+into dependency "levels" and runs each level concurrently).
 
-Either way, a task only runs if every one of its dependencies succeeded.
-If a dependency failed or was skipped, the task is marked 'skipped'
-instead of running - this cascades naturally through the graph.
+Retry logic (new this week): each task retries on failure using exponential
+backoff with jitter. Delay before attempt N (N > 1) is:
+
+    retry_delay_seconds * 2^(attempt - 1) + random(0, 30)
+
+So with the default retry_delay_seconds=60: ~60-90s before attempt 2,
+~120-150s before attempt 3, ~240-270s before attempt 4, etc. This spaces
+retries out further each time, so a task hammering a struggling downstream
+system backs off instead of making things worse.
+
+Errors are classified as retryable or not (see retry.py) - a non-retryable
+error skips straight to failed_permanent instead of wasting time retrying
+something that will never succeed.
 """
 
+import random
+import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
 from .state import StateStore
+from .retry import is_retryable
 
 
 class CycleError(ValueError):
@@ -25,8 +32,6 @@ class CycleError(ValueError):
 
 
 def topological_sort(dag_obj):
-    """Returns a list of task names in a valid execution order.
-    Raises CycleError if the DAG's dependencies contain a loop."""
     in_degree = {name: len(t.depends_on) for name, t in dag_obj.tasks.items()}
     dependents = {name: [] for name in dag_obj.tasks}
     for name, t in dag_obj.tasks.items():
@@ -55,10 +60,8 @@ def topological_sort(dag_obj):
 
 
 def compute_levels(dag_obj, order):
-    """Groups tasks into levels by dependency depth, for parallel execution.
-    A task's level = 1 + the max level of its dependencies (0 if none)."""
     level = {}
-    for name in order:  # order guarantees deps are computed before dependents
+    for name in order:
         deps = dag_obj.tasks[name].depends_on
         level[name] = 0 if not deps else 1 + max(level[d] for d in deps)
 
@@ -90,9 +93,24 @@ class Runner:
                 self._run_level_parallel(dag_obj, level_tasks, run_id, task_status, verbose)
         else:
             for name in order:
-                self._run_one_task(dag_obj, name, run_id, task_status, verbose)
+                task_obj = dag_obj.tasks[name]
+                deps_ok = all(
+                    task_status.get(dep) == "success" for dep in task_obj.depends_on
+                )
+                if not deps_ok:
+                    task_status[name] = "skipped"
+                    self.state.set_task_status(run_id, name, "skipped")
+                    if verbose:
+                        print(f"  [SKIPPED] {name} (an upstream dependency did not succeed)")
+                    continue
+                final_status = self._execute_with_retries(task_obj, run_id, verbose)
+                task_status[name] = final_status
 
-        overall_status = "failed" if "failed" in task_status.values() else "success"
+        overall_status = (
+            "failed"
+            if any(s in ("failed", "failed_permanent") for s in task_status.values())
+            else "success"
+        )
         self.state.finish_run(run_id, overall_status)
 
         if verbose:
@@ -100,36 +118,52 @@ class Runner:
 
         return run_id
 
-    def _run_one_task(self, dag_obj, name, run_id, task_status, verbose):
-        task_obj = dag_obj.tasks[name]
-        deps_ok = all(task_status.get(dep) == "success" for dep in task_obj.depends_on)
+    def _execute_with_retries(self, task_obj, run_id, verbose):
+        """Runs one task, retrying on retryable failures with exponential
+        backoff + jitter. Returns the final status: 'success' or 'failed_permanent'."""
+        max_attempts = task_obj.retries + 1  # first try + N retries
+        attempt = 1
 
-        if not deps_ok:
-            task_status[name] = "skipped"
-            self.state.set_task_status(run_id, name, "skipped")
+        while True:
+            self.state.set_task_status(run_id, task_obj.name, "running")
             if verbose:
-                print(f"  [SKIPPED] {name} (an upstream dependency did not succeed)")
-            return
+                suffix = f" (attempt {attempt}/{max_attempts})" if attempt > 1 else ""
+                print(f"  [RUNNING] {task_obj.name}{suffix}...")
 
-        self.state.set_task_status(run_id, name, "running")
-        if verbose:
-            print(f"  [RUNNING] {name}...")
-        try:
-            task_obj.run()
-        except Exception as e:
-            error_message = f"{type(e).__name__}: {e}"
-            task_status[name] = "failed"
-            self.state.set_task_status(run_id, name, "failed", error_message=error_message)
-            if verbose:
-                print(f"  [FAILED]  {name}: {error_message}")
-        else:
-            task_status[name] = "success"
-            self.state.set_task_status(run_id, name, "success")
-            if verbose:
-                print(f"  [SUCCESS] {name}")
+            try:
+                task_obj.run()
+            except Exception as e:
+                error_message = f"{type(e).__name__}: {e}"
+                retryable = is_retryable(e)
+
+                if not retryable or attempt >= max_attempts:
+                    self.state.set_task_status(
+                        run_id, task_obj.name, "failed_permanent", error_message=error_message
+                    )
+                    if verbose:
+                        reason = "non-retryable error" if not retryable else "retries exhausted"
+                        print(f"  [FAILED_PERMANENT] {task_obj.name}: {error_message} ({reason})")
+                    return "failed_permanent"
+
+                delay = task_obj.retry_delay_seconds * (2 ** (attempt - 1)) + random.uniform(0, 30)
+                self.state.set_task_status(
+                    run_id, task_obj.name, "retrying", error_message=error_message
+                )
+                if verbose:
+                    print(
+                        f"  [RETRYING] {task_obj.name} failed (attempt {attempt}/{max_attempts}): "
+                        f"{error_message}. Waiting {delay:.1f}s before retry..."
+                    )
+                time.sleep(delay)
+                attempt += 1
+            else:
+                self.state.set_task_status(run_id, task_obj.name, "success")
+                if verbose:
+                    suffix = f" (attempt {attempt}/{max_attempts})" if attempt > 1 else ""
+                    print(f"  [SUCCESS] {task_obj.name}{suffix}")
+                return "success"
 
     def _run_level_parallel(self, dag_obj, level_tasks, run_id, task_status, verbose):
-        # tasks whose deps already failed/skipped get marked immediately, no thread needed
         runnable = []
         for name in level_tasks:
             task_obj = dag_obj.tasks[name]
@@ -145,27 +179,13 @@ class Runner:
         if not runnable:
             return
 
-        for name in runnable:
-            self.state.set_task_status(run_id, name, "running")
-            if verbose:
-                print(f"  [RUNNING] {name}...")
-
         with ThreadPoolExecutor(max_workers=len(runnable)) as executor:
-            futures = {executor.submit(dag_obj.tasks[name].run): name for name in runnable}
+            futures = {
+                executor.submit(
+                    self._execute_with_retries, dag_obj.tasks[name], run_id, verbose
+                ): name
+                for name in runnable
+            }
             for future in as_completed(futures):
                 name = futures[future]
-                try:
-                    future.result()
-                except Exception as e:
-                    error_message = f"{type(e).__name__}: {e}"
-                    task_status[name] = "failed"
-                    self.state.set_task_status(
-                        run_id, name, "failed", error_message=error_message
-                    )
-                    if verbose:
-                        print(f"  [FAILED]  {name}: {error_message}")
-                else:
-                    task_status[name] = "success"
-                    self.state.set_task_status(run_id, name, "success")
-                    if verbose:
-                        print(f"  [SUCCESS] {name}")
+                task_status[name] = future.result()

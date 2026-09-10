@@ -1,28 +1,28 @@
 """
 dag.py - defines what a DAG and a Task are.
-
-A DAG is just: a name + a collection of Tasks.
-A Task is just: a name + a Python function to run + a list of tasks it depends on.
 """
 
 
 class Task:
-    def __init__(self, name, run, depends_on=None):
+    def __init__(self, name, run, depends_on=None, retries=3, retry_delay_seconds=60):
         self.name = name
         self.run = run
         depends_on = depends_on or []
         self.depends_on = [
             d.name if isinstance(d, Task) else d for d in depends_on
         ]
+        self.retries = retries  # max retry attempts after the first failure
+        self.retry_delay_seconds = retry_delay_seconds  # base delay for backoff
 
     def __repr__(self):
         return f"Task(name={self.name!r}, depends_on={self.depends_on!r})"
 
 
 class DAG:
-    def __init__(self, name, schedule=None):
+    def __init__(self, name, schedule=None, timezone=None):
         self.name = name
-        self.schedule = schedule
+        self.schedule = schedule  # cron expression, e.g. "*/2 * * * *"
+        self.timezone = timezone  # e.g. "Africa/Lagos" - stretch goal
         self.tasks = {}
 
     def add_task(self, task_obj):
@@ -53,10 +53,10 @@ def _current_dag():
     return _dag_build_stack[-1]
 
 
-def dag(name, schedule=None):
+def dag(name, schedule=None, timezone=None):
     def decorator(func):
         def wrapper(*args, **kwargs):
-            new_dag = DAG(name=name, schedule=schedule)
+            new_dag = DAG(name=name, schedule=schedule, timezone=timezone)
             _dag_build_stack.append(new_dag)
             try:
                 func(*args, **kwargs)
@@ -72,7 +72,10 @@ def dag(name, schedule=None):
     return decorator
 
 
-def task(name, run, depends_on=None):
-    t = Task(name=name, run=run, depends_on=depends_on)
+def task(name, run, depends_on=None, retries=3, retry_delay_seconds=60):
+    t = Task(
+        name=name, run=run, depends_on=depends_on,
+        retries=retries, retry_delay_seconds=retry_delay_seconds,
+    )
     _current_dag().add_task(t)
     return t

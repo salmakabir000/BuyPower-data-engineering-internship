@@ -17,8 +17,8 @@ from datetime import datetime
 
 from .registry import discover_dags
 from .runner import Runner, CycleError
+from .scheduler import Scheduler
 from .state import StateStore
-
 
 def _parse_ts(ts):
     """ISO timestamp string -> datetime, or None if ts is None/empty."""
@@ -46,7 +46,7 @@ def _fmt_result(store, run_row):
         return run_row["status"] or "running"
 
     detail = store.get_run(run_row["run_id"])
-    failed_task = next((t for t in detail["tasks"] if t["status"] == "failed"), None)
+    failed_task = next((t for t in detail["tasks"] if t["status"] == "failed_permanent"), None)
     if failed_task is None:
         return "failed"
 
@@ -126,6 +126,10 @@ def cmd_logs(args):
         error = t["error_message"] or ""
         print(f"{t['task_name']:<15} | {t['status']:<8} | {duration:<8} | {error}")
 
+def cmd_scheduler_start(args):
+    scheduler = Scheduler(dags_dir=args.dags_dir, interval_seconds=args.interval)
+    scheduler.run_forever()
+
 
 def main():
     parser = argparse.ArgumentParser(
@@ -156,6 +160,17 @@ def main():
     logs_p.add_argument("dag_name")
     logs_p.add_argument("run_id")
     logs_p.set_defaults(func=cmd_logs)
+
+    scheduler_p = subparsers.add_parser("scheduler", help="Scheduler commands")
+    scheduler_sub = scheduler_p.add_subparsers(dest="scheduler_command", required=True)
+    scheduler_start_p = scheduler_sub.add_parser(
+        "start", help="Run the scheduler in the foreground"
+    )
+    scheduler_start_p.add_argument(
+        "--interval", type=int, default=30,
+        help="Seconds between schedule checks (default: 30)"
+    )
+    scheduler_start_p.set_defaults(func=cmd_scheduler_start)
 
     args = parser.parse_args()
     args.func(args)
