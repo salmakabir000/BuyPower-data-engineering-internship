@@ -1,0 +1,19 @@
+name: customer_import
+source:
+  type: csv_file
+  config:
+    path: data/sample_input.csv
+transforms:
+  - type: filter_rows
+    column: signup_date
+    operator: not_null
+  - type: cast_column
+    column: signup_date
+    to: datetime
+destination:
+  type: sqlite
+  config:
+    path: data/customers.db
+    table: customers
+    primary_key: [customer_id]
+    on_conflict: replace

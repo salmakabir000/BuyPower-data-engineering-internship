@@ -1,0 +1,27 @@
+name: abuja_weather
+source:
+  type: rest_api
+  config:
+    base_url: https://api.open-meteo.com/v1
+    endpoint: /forecast
+    params:
+      latitude: 9.0765
+      longitude: 7.3986
+      hourly: temperature_2m,relative_humidity_2m
+    response_path: hourly
+    response_format: columnar
+transforms:
+  - type: rename_column
+    from: time
+    to: forecast_time
+  - type: cast_column
+    column: forecast_time
+    to: datetime
+  - type: add_column
+    name: ingested_at
+    value: "{{ now() }}"
+destination:
+  type: parquet_file
+  config:
+    path: data/weather.parquet
+    mode: overwrite
