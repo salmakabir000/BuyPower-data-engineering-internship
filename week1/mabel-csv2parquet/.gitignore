@@ -1,0 +1,9 @@
+# Python virtual environment
+venv/
+
+# Bytecode / cache
+__pycache__/
+*.pyc
+*.pyo
+*.csv
+*.parquet
