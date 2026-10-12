@@ -1,0 +1,20 @@
+name: csv_ingest
+source:
+  type: csv_file
+  config:
+    path: data/sample.csv
+transforms:
+  - type: filter_rows
+    column: amount
+    op: gt
+    value: 0
+  - type: add_column
+    name: loaded_at
+    value: "{{ now() }}"
+destination:
+  type: sqlite
+  config:
+    path: data/ingest.db
+    table: csv_rows
+    primary_key: [order_id]
+    on_conflict: replace

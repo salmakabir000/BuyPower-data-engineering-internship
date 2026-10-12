@@ -1,0 +1,26 @@
+name: crypto_prices
+source:
+  type: rest_api
+  config:
+    base_url: https://api.coingecko.com/api/v3
+    endpoint: /coins/markets
+    params:
+      vs_currency: usd
+      per_page: 100
+    pagination:
+      type: page
+      param_name: page
+      max_pages: 3
+transforms:
+  - type: select_columns
+    columns: [id, symbol, name, current_price, market_cap, total_volume]
+  - type: add_column
+    name: ingested_at
+    value: "{{ now() }}"
+destination:
+  type: sqlite
+  config:
+    path: data/crypto.db
+    table: coin_prices
+    primary_key: [id, ingested_at]
+    on_conflict: ignore

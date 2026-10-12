@@ -1,0 +1,9 @@
+dataset: coin_prices
+source:
+  type: sqlite
+  path: crypto_small.db
+  table: coin_prices
+checks:
+  - type: row_count_min
+    value: 100
+    severity: critical
