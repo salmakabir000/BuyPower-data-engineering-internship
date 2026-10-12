@@ -1,0 +1,35 @@
+name: weather_hourly
+source:
+  type: rest_api
+  config:
+    base_url: https://api.open-meteo.com/v1
+    endpoint: /forecast
+    params:
+      latitude: 6.5244
+      longitude: 3.3792
+      hourly: temperature_2m,relative_humidity_2m,precipitation
+      forecast_days: 3
+      timezone: Africa/Lagos
+    records_path: hourly          # the data lives under the "hourly" key in the JSON
+transforms:
+  - type: rename_column
+    mapping:
+      time: observed_at
+  - type: cast_column
+    column: observed_at
+    dtype: datetime
+  - type: filter_rows
+    column: temperature_2m
+    op: not_null
+  - type: add_column
+    name: city
+    value: Lagos
+  - type: add_column
+    name: ingested_at
+    value: "{{ now() }}"
+destination:
+  type: parquet_file
+  config:
+    path: data/weather.parquet
+    mode: append
+    primary_key: [city, observed_at]   # re-runs replace old forecasts for the same hour
