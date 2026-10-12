@@ -1,20 +1,3 @@
-#!/usr/bin/env python3
-"""
-dq.py — a tiny data quality checker (a mini Great Expectations / Soda).
-
-Usage:
-    python dq.py checks/coin_prices.yml
-
-    # Compare mode — catch a silently-broken upstream extract by comparing
-    # row counts against a previous run's config:
-    python dq.py checks/today.yml --compare checks/yesterday.yml --max-drop-pct 10
-
-Reads a YAML config describing a dataset (SQLite table or Parquet file) plus
-a list of declarative checks, runs each check with pandas, prints a readable
-report, and exits 1 if any *critical* check failed (warnings never fail the
-build — that's the whole point of the severity split).
-"""
-
 import argparse
 import re
 import sqlite3
@@ -77,13 +60,8 @@ def load_dataframe(source: dict) -> pd.DataFrame:
         )
 
 
-# --------------------------------------------------------------------------
 # Individual check implementations
-#
-# Each check function takes (df, check_config) and returns a dict with at
-# least: passed (bool), failure_count (int), sample_failures (list).
-# row_count_min also returns a "detail" string used directly in the report.
-# --------------------------------------------------------------------------
+
 
 def check_not_null(df: pd.DataFrame, check: dict) -> dict:
     column = check["column"]
@@ -178,10 +156,8 @@ def _require_column(df: pd.DataFrame, column: str):
         )
 
 
-# --------------------------------------------------------------------------
-# Running checks + reporting
-# --------------------------------------------------------------------------
 
+# Running checks + reporting
 def run_checks(df: pd.DataFrame, checks: list) -> list:
     """Run every check in the config against the DataFrame and return result dicts."""
     results = []
@@ -250,10 +226,7 @@ def format_report(dataset_name: str, total_rows: int, results: list) -> tuple:
     return "\n".join(lines), len(critical_failures) > 0
 
 
-# --------------------------------------------------------------------------
 # Compare mode (row-count drop detection between two runs / sources)
-# --------------------------------------------------------------------------
-
 def run_compare(current_config: dict, previous_config_path: str, max_drop_pct: float) -> tuple:
     """
     Loads the dataset pointed to by `previous_config_path`, compares its row
@@ -291,9 +264,8 @@ def run_compare(current_config: dict, previous_config_path: str, max_drop_pct: f
     return "\n".join(lines), failed
 
 
-# --------------------------------------------------------------------------
 # CLI entry point
-# --------------------------------------------------------------------------
+
 
 def main():
     parser = argparse.ArgumentParser(description="Run declarative data quality checks against a dataset.")
