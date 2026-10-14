@@ -88,3 +88,23 @@ would need to exist.
 
 The sweet spot is many similar pipelines with simple logic. For one-off
 pipelines with heavy custom logic, plain Python is often simpler.
+
+## Running pipelines on the scheduler (stretch goal)
+`dags/yaml_pipelines_dag.py` wires YAML pipelines into the Week 12-14
+orchestrator and scheduler. Each DAG has two tasks and no pipeline logic:
+`validate` (`config_pipeline validate <yaml>`) then `run`
+(`config_pipeline run <yaml>`). `run` only starts if `validate` passed.
+
+The tasks call the engine's CLI in a subprocess, so each pipeline runs from
+this project's root and its relative paths resolve correctly. A config
+mistake fails immediately with no retries (non-retryable), while a network or
+rate-limit failure is retried with the scheduler's exponential backoff.
+
+From the orchestrator folder (`week12/pozhar-orchestrator`):
+
+    python3 -m mini_orchestrator --dags-dir ../../week15/pozhar-config-pipeline/dags list
+    python3 -m mini_orchestrator --dags-dir ../../week15/pozhar-config-pipeline/dags run weather_pipeline
+    python3 -m mini_orchestrator --dags-dir ../../week15/pozhar-config-pipeline/dags scheduler start
+
+Needs the Week 12 orchestrator and `croniter`. `weather_pipeline` is set to
+run every 2 minutes as a demo cadence, so change it to `0 * * * *` for real use.
