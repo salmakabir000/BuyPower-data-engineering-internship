@@ -1,0 +1,23 @@
+source:
+  type: rest_api
+  url: https://api.coingecko.com/api/v3/coins/markets
+  params:
+    vs_currency: usd
+    per_page: 10
+    page: 1
+  timeout: 30
+
+transforms:
+  - type: select_columns
+    columns:
+      - id
+      - symbol
+      - name
+      - current_price
+      - market_cap
+      - total_volume
+
+destination:
+  type: sqlite
+  database: data/crypto.db
+  table: coin_prices
