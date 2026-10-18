@@ -1,0 +1,25 @@
+source:
+  type: rest_api
+  url: https://api.open-meteo.com/v1/forecast
+  params:
+    latitude: 9.08
+    longitude: 8.68
+    hourly: temperature_2m,relative_humidity_2m
+    forecast_days: 1
+  data_path: hourly
+  timeout: 30
+
+transforms:
+  - type: rename_column
+    mapping:
+      time: observation_time
+      temperature_2m: temperature
+      relative_humidity_2m: relative_humidity
+
+  - type: add_column
+    column: source_system
+    value: open_meteo
+
+destination:
+  type: parquet_file
+  path: data/weather.parquet

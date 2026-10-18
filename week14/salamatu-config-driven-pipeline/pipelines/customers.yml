@@ -1,0 +1,34 @@
+source:
+  type: csv_file
+  path: data/customers.csv
+
+transforms:
+  - type: rename_column
+    mapping:
+      city: location
+
+  - type: filter_rows
+    column: age
+    operator: greater_than
+    value: 26
+
+  - type: add_column
+    column: source_system
+    value: customer_csv
+
+  - type: cast_column
+    column: customer_id
+    dtype: string
+
+  - type: select_columns
+    columns:
+      - customer_id
+      - name
+      - location
+      - age
+      - source_system
+
+destination:
+  type: sqlite
+  database: data/customers.db
+  table: customers
