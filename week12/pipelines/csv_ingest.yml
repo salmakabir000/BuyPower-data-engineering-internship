@@ -1,0 +1,19 @@
+name: csv_ingest
+
+source:
+  type: csv_file
+  config:
+    path: sample_data.csv
+
+transforms:
+  - type: select_columns
+    columns:
+      - id
+      - name
+      - price
+
+destination:
+  type: sqlite
+  config:
+    path: csv_data.db
+    table: products

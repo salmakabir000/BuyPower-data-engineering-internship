@@ -1,0 +1,26 @@
+name: weather_data
+
+source:
+  type: rest_api
+  config:
+    base_url: https://api.open-meteo.com/v1
+    endpoint: /forecast
+    params:
+      latitude: 9.0765
+      longitude: 7.3986
+      current: temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m
+
+transforms:
+  - type: select_columns
+    columns:
+      - latitude
+      - longitude
+      - current.temperature_2m
+      - current.relative_humidity_2m
+      - current.weather_code
+      - current.wind_speed_10m
+
+destination:
+  type: parquet_file
+  config:
+    path: weather.parquet
