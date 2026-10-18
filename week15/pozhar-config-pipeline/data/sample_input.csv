@@ -1,0 +1,5 @@
+customer_id,name,signup_date,plan
+C001,Ada Lovelace,2026-01-15,premium
+C002,Grace Hopper,2026-02-03,basic
+C003,Alan Turing,2026-02-20,premium
+C004,Margaret Hamilton,,basic
