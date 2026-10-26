@@ -1,0 +1,25 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: word-counter-postgres
+    restart: unless-stopped
+
+    environment:
+      POSTGRES_DB: streaming_db
+      POSTGRES_USER: word_counter
+      POSTGRES_PASSWORD: dev_password_change_me
+
+    ports:
+      - "127.0.0.1:5432:5432"
+
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U word_counter -d streaming_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres_data:
