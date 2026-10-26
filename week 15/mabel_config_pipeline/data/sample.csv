@@ -1,0 +1,6 @@
+order_id,customer,amount,status
+1001,Ada,2500.50,paid
+1002,Tunde,1200.00,paid
+1003,Ngozi,0,refunded
+1004,Musa,8750.25,paid
+1005,Amaka,430.00,pending
