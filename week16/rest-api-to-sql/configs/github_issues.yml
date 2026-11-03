@@ -1,0 +1,28 @@
+name: github_issues_source
+
+type: rest_api
+
+base_url: https://api.github.com
+endpoint: /repos/apache/airflow/issues
+
+auth:
+  type: bearer
+  token_env: GITHUB_TOKEN
+
+pagination:
+  type: link_header
+  per_page: 100
+
+rate_limit:
+  requests_per_minute: 30
+
+incremental:
+  cursor_field: updated_at
+  cursor_param: since
+
+destination:
+  type: postgres
+  conn_env: PG_CONN
+  table: raw_github_issues
+  primary_key: id
+  write_mode: upsert
