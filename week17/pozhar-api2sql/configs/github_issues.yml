@@ -1,0 +1,35 @@
+# GitHub issues from apache/airflow -> Postgres, using the Link header for pagination.
+#
+# Before running:
+#   export GITHUB_TOKEN=...                                   (a read-only personal access token)
+#   export PG_CONN=postgresql://postgres:password@localhost:5432/api2sql
+name: github_issues
+source:
+  type: rest_api
+  base_url: https://api.github.com
+  endpoint: /repos/apache/airflow/issues
+  params:
+    state: all          # open and closed
+    per_page: 100       # the maximum GitHub allows
+    sort: updated       # oldest-updated first, so a partly finished run can resume safely
+    direction: asc
+  headers:
+    Accept: application/vnd.github+json
+  auth:
+    type: bearer
+    token_env: GITHUB_TOKEN
+  pagination:
+    type: link_header   # follows: Link: <...>; rel="next"
+  rate_limit:
+    requests_per_minute: 60
+  incremental:
+    cursor_field: updated_at
+    cursor_param: since
+    ascending: true     # the API returns records oldest-first by the cursor field (see sort/direction above)
+    initial_lookback: 7d    # the very first run starts 7 days back; raise it for more data, or delete the line to load everything
+destination:
+  type: postgres
+  conn_env: PG_CONN
+  table: raw_github_issues
+  primary_key: id
+  write_mode: upsert

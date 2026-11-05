@@ -1,0 +1,23 @@
+# Example of the "next_cursor" strategy: the response body says where the next page is.
+# PokeAPI puts the full URL of the next page in a field called "next".
+# (A body field holding a plain token works too: set cursor_param to the query
+# parameter that should carry it.)
+name: pokemon
+source:
+  type: rest_api
+  base_url: https://pokeapi.co/api/v2
+  endpoint: /pokemon
+  params:
+    limit: 100
+  records_path: results       # the list of records sits under "results" in the response
+  pagination:
+    type: next_cursor
+    cursor_path: next         # where to find the next page in the response body
+  rate_limit:
+    requests_per_minute: 60
+destination:
+  type: postgres
+  conn_env: PG_CONN
+  table: raw_pokemon
+  primary_key: name
+  write_mode: upsert
