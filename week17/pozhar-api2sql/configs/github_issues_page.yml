@@ -1,0 +1,34 @@
+# The same GitHub data, but paginated with a page number instead of the Link header.
+# GitHub accepts ?page=N as well, so this shows the "page" strategy against a real API.
+name: github_issues_page
+source:
+  type: rest_api
+  base_url: https://api.github.com
+  endpoint: /repos/apache/airflow/issues
+  params:
+    state: all
+    per_page: 100
+    sort: updated
+    direction: asc
+  headers:
+    Accept: application/vnd.github+json
+  auth:
+    type: bearer
+    token_env: GITHUB_TOKEN
+  pagination:
+    type: page
+    param: page         # sent as ?page=1, ?page=2, ...
+    page_size: 100      # a page with fewer records than this means we reached the end
+  rate_limit:
+    requests_per_minute: 60
+  incremental:
+    cursor_field: updated_at
+    cursor_param: since
+    ascending: true
+    initial_lookback: 7d
+destination:
+  type: postgres
+  conn_env: PG_CONN
+  table: raw_github_issues_page
+  primary_key: id
+  write_mode: upsert
