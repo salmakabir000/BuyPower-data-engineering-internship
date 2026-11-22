@@ -1,0 +1,9 @@
+certifi==2026.10.19
+charset-normalizer==3.5.2
+idna==3.20
+kafka-python==3.0.11
+psycopg==3.3.6
+psycopg-binary==3.3.6
+requests==2.34.2
+typing_extensions==4.16.0
+urllib3==2.8.0
