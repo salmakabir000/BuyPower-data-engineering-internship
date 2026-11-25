@@ -1,0 +1,16 @@
+# Local database credentials
+profiles.yml
+
+# Python cache files
+__pycache__/
+*.py[cod]
+
+# Pytest cache
+.pytest_cache/
+
+# Generated documentation
+target/
+
+# Virtual environments
+.venv/
+venv/
