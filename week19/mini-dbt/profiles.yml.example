@@ -1,0 +1,12 @@
+github_warehouse:
+  target: dev
+
+  outputs:
+    dev:
+      type: postgres
+      host: localhost
+      port: 5432
+      user: warehouse_loader
+      database: github_warehouse
+      schema: analytics
+      password_env: DB_PASSWORD

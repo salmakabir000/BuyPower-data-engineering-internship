@@ -1,0 +1,16 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+
+# Environment variables and secrets
+.env
+.env.*
+!.env.example
+
+# Raw GitHub Archive data
+week7/data/raw/*.json.gz
+
+# OS files
+.DS_Store
+Thumbs.db

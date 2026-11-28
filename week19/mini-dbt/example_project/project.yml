@@ -1,0 +1,10 @@
+name: github_analytics
+profile: github_warehouse
+
+models:
+  schema: analytics
+  materialized: table
+
+sources:
+  warehouse:
+    schema: public
